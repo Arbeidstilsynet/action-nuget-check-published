@@ -10,19 +10,19 @@ Action to check if a NuGet package version is already published
 
 ## Inputs
 
-| Name           | Description                              | Required | Default      |
-|----------------|------------------------------------------|----------|--------------|
-| `name`         | The package name                         | Yes      |              |
-| `version`      | The package version                      | Yes      |              |
-| `source-feed`  | The source feed to check against         | No       | `nuget.org`  |
-| `dotnet-version` | The version of dotnet to use           | No       | `8.0.x`      |
+| Name             | Description                      | Required | Default     |
+|------------------|----------------------------------|----------|-------------|
+| `name`           | The package name                 | Yes      |             |
+| `version`        | The package version              | Yes      |             |
+| `source-feed`    | The source feed to check against | No       | `nuget.org` |
+| `dotnet-version` | The version of dotnet to use     | No       | `8.0.x`     |
 
 ## Outputs
 
-| Name          | Description                                                    |
-|---------------|----------------------------------------------------------------|
-| `published`   | `true` if the version is already published, `false` otherwise  |
-| `last_version`| The last version published on the source feed                  |
+| Name           | Description                                                   |
+|----------------|---------------------------------------------------------------|
+| `published`    | `true` if the version is already published, `false` otherwise |
+| `last_version` | The last version published on the source feed                 |
 
 ## Usage
 
@@ -38,16 +38,13 @@ jobs:
   check-nuget-version:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Check if NuGet package version is published
-        uses: ./
+        uses: Arbeidstilsynet/action-nuget-check-published@v1
         with:
           name: MyPackage
           version: 1.2.3
-          # source_feed: nuget.org # Optional, defaults to nuget.org
-          # dotnet-version: 8.0.x # Optional, defaults to 8.0.x
 
       - name: Show results
         run: |
