@@ -9,7 +9,7 @@ inputs:
   version:
     description: "The package version"
     required: true
-  source_feed:
+  source-feed:
     description: "The source feed to check against"
     default: "nuget.org"
   dotnet-version:
@@ -35,7 +35,7 @@ runs:
       run: |
         NAME="${{ inputs.name }}"
         VERSION="${{ inputs.version }}"
-        SOURCE_FEED="${{ inputs.source_feed }}"
+        SOURCE_FEED="${{ inputs.source-feed }}"
         SEARCH=$(dotnet package search "$NAME" --format json)
         echo "$SEARCH"
         FOUND=$(echo "$SEARCH" | jq --arg SOURCE_FEED "$SOURCE_FEED" --arg VERSION "$VERSION" '.searchResult[] | select(.sourceName==$SOURCE_FEED) | .packages[] | select(.latestVersion == $VERSION) | .latestVersion' | tr -d '"')
