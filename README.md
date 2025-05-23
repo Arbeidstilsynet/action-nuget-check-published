@@ -40,8 +40,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check if NuGet package version is published
-        uses: Arbeidstilsynet/action-nuget-check-published@v1
+      - uses: Arbeidstilsynet/action-nuget-check-published@v1
+        id: nuget_version_check
         with:
           name: MyPackage
           version: 1.2.3
