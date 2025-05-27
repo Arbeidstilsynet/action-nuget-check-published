@@ -21,10 +21,10 @@ outputs:
     description: "true if the version is already published, false otherwise"
     value: ${{ steps.nuget_version_check.outputs.published }}
   last_version:
-    description: "The last version published"
+    description: "The last stable version published on the source feed (empty if none)"
     value: ${{ steps.nuget_version_check.outputs.last_version }}
   last_prerelease_version:
-    description: "The last prerelease version published"
+    description: "The last prerelease version published on the source feed (empty if none)"
     value: ${{ steps.nuget_version_check.outputs.last_prerelease_version }}
 
 runs:
@@ -40,23 +40,24 @@ runs:
         NAME="${{ inputs.name }}"
         VERSION="${{ inputs.version }}"
         SOURCE_FEED="${{ inputs.source-feed }}"
-        SEARCH=$(dotnet package search "$NAME" --format json)
+
+        SEARCH=$(dotnet package search "$NAME" --exact-match --prerelease --format json)
         echo "$SEARCH"
 
-        # Check if any version matches
-        FOUND=$(echo "$SEARCH" | jq --arg SOURCE_FEED "$SOURCE_FEED" --arg VERSION "$VERSION" '.searchResult[] | select(.sourceName==$SOURCE_FEED) | .packages[] | .versions[] | select(.version == $VERSION) | .version' | tr -d '"')
-        # Get all versions (sorted descending)
-        ALL_VERSIONS=$(echo "$SEARCH" | jq --arg SOURCE_FEED "$SOURCE_FEED" '.searchResult[] | select(.sourceName==$SOURCE_FEED) | .packages[] | .versions[].version' | tr -d '"' | sort -Vr)
+        # Get all versions for the package from the selected feed
+        ALL_VERSIONS=$(echo "$SEARCH" | jq -r --arg SOURCE_FEED "$SOURCE_FEED" '.searchResult[] | select(.sourceName==$SOURCE_FEED) | .packages[] | .version' | sort -Vr)
+
+        # Check if the requested version exists
+        if echo "$ALL_VERSIONS" | grep -Fxq "$VERSION"; then
+          echo "published=true" >> $GITHUB_OUTPUT
+        else
+          echo "published=false" >> $GITHUB_OUTPUT
+        fi
+
+        # Find the last stable version (no hyphen)
         LAST_VERSION=$(echo "$ALL_VERSIONS" | grep -v '-' | head -n 1)
+        # Find the last prerelease version (has hyphen)
         LAST_PRERELEASE_VERSION=$(echo "$ALL_VERSIONS" | grep '-' | head -n 1)
 
         echo "last_version=$LAST_VERSION" >> $GITHUB_OUTPUT
         echo "last_prerelease_version=$LAST_PRERELEASE_VERSION" >> $GITHUB_OUTPUT
-
-        if [ "$FOUND" = "$VERSION" ]; then
-          echo "The version ($FOUND) for $NAME is already published in the $SOURCE_FEED feed."
-          echo "published=true" >> $GITHUB_OUTPUT
-        else
-          echo "Last version published for $NAME in the $SOURCE_FEED feed was '$LAST_VERSION'. The given version $VERSION is not the same."
-          echo "published=false" >> $GITHUB_OUTPUT
-        fi
