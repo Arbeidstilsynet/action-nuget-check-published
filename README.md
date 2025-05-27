@@ -19,10 +19,11 @@ Action to check if a NuGet package version is already published
 
 ## Outputs
 
-| Name           | Description                                                   |
-|----------------|---------------------------------------------------------------|
-| `published`    | `true` if the version is already published, `false` otherwise |
-| `last_version` | The last version published on the source feed                 |
+| Name                      | Description                                                              |
+|---------------------------|--------------------------------------------------------------------------|
+| `published`               | `true` if the version is already published, `false` otherwise            |
+| `last_version`            | The last stable version published on the source feed (empty if none)     |
+| `last_prerelease_version` | The last prerelease version published on the source feed (empty if none) |
 
 ## Usage
 
@@ -50,4 +51,5 @@ jobs:
         run: |
           echo "Published: ${{ steps.nuget_version_check.outputs.published }}"
           echo "Last version: ${{ steps.nuget_version_check.outputs.last_version }}"
+          echo "Last prerelease version: ${{ steps.nuget_version_check.outputs.last_prerelease_version }}"
 ```
