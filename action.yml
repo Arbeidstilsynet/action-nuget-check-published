@@ -10,7 +10,7 @@ inputs:
     description: "The package version"
     required: true
   source-feed:
-    description: "The source feed to check against"
+    description: "The source feed to check against. Must match a key in your `nuget.config`."
     default: "nuget.org"
   dotnet-version:
     description: "The version of dotnet to use"

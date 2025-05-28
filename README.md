@@ -10,12 +10,12 @@ Action to check if a NuGet package version is already published
 
 ## Inputs
 
-| Name             | Description                      | Required | Default     |
-|------------------|----------------------------------|----------|-------------|
-| `name`           | The package name                 | Yes      |             |
-| `version`        | The package version              | Yes      |             |
-| `source-feed`    | The source feed to check against | No       | `nuget.org` |
-| `dotnet-version` | The version of dotnet to use     | No       | `8.0.x`     |
+| Name             | Description                                                                | Required | Default     |
+|------------------|----------------------------------------------------------------------------|----------|-------------|
+| `name`           | The package name                                                           | Yes      |             |
+| `version`        | The package version                                                        | Yes      |             |
+| `source-feed`    | The source feed to check against. Must match a key in your `nuget.config`. | No       | `nuget.org` |
+| `dotnet-version` | The version of dotnet to use                                               | No       | `8.0.x`     |
 
 ## Outputs
 
