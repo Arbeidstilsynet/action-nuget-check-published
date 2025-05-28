@@ -5,7 +5,6 @@ Action to check if a NuGet package version is already published
 ## Requirements
 
 - GitHub Actions runner with Bash shell support (Linux, macOS, or Windows with Bash)
-- [.NET SDK](https://dotnet.microsoft.com/download) (automatically installed by the action)
 - [`jq`](https://stedolan.github.io/jq/) installed on the runner (available by default on Ubuntu runners)
 
 ## Inputs
