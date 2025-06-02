@@ -55,9 +55,9 @@ runs:
         fi
 
         # Find the last stable version (no hyphen)
-        LAST_VERSION=$(echo "$ALL_VERSIONS" | grep -v '-' | head -n 1)
-        # Find the last prerelease version (has hyphen)
-        LAST_PRERELEASE_VERSION=$(echo "$ALL_VERSIONS" | grep '-' | head -n 1)
-
+        LAST_VERSION=$(echo "$ALL_VERSIONS" | grep -v '-' | head -n 1 || true)
         echo "last_version=$LAST_VERSION" >> $GITHUB_OUTPUT
+
+        # Find the last prerelease version (has hyphen)
+        LAST_PRERELEASE_VERSION=$(echo "$ALL_VERSIONS" | grep '-' | head -n 1 || true)
         echo "last_prerelease_version=$LAST_PRERELEASE_VERSION" >> $GITHUB_OUTPUT
