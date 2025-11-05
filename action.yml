@@ -43,8 +43,15 @@ runs:
         NAME="${{ inputs.name }}"
         VERSION="${{ inputs.version }}"
         SOURCE_FEED="${{ inputs.source-feed }}"
+        CONFIG_FILE="${{ inputs.config-file }}"
 
-        SEARCH=$(dotnet package search "$NAME" --exact-match --prerelease --format json)
+        # Build the dotnet package search command with optional --configfile flag
+        SEARCH_CMD=(dotnet package search "$NAME" --exact-match --prerelease --format json)
+        if [ -n "$CONFIG_FILE" ]; then
+          SEARCH_CMD+=(--configfile "$CONFIG_FILE")
+        fi
+
+        SEARCH=$("${SEARCH_CMD[@]}")
         echo "$SEARCH"
 
         # Get all versions for the package from the selected feed
