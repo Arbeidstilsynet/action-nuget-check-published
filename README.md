@@ -39,9 +39,9 @@ jobs:
   check-nuget-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: Arbeidstilsynet/action-nuget-check-published@v1
+      - uses: Arbeidstilsynet/action-nuget-check-published@v2
         id: nuget_version_check
         with:
           name: MyPackage
