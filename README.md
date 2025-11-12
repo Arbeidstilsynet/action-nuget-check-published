@@ -14,7 +14,7 @@ Action to check if a NuGet package version is already published
 | `name`           | The package name                                                           | Yes      |                          |
 | `version`        | The package version                                                        | Yes      |                          |
 | `source-feed`    | The source feed to check against. Must match a key in your `nuget.config`. | No       | `nuget.org`              |
-| `dotnet-version` | The version of dotnet to use                                               | No       | `8.0.x`                  |
+| `dotnet-version` | The version of dotnet to use                                               | No       | `10.0.x`                 |
 | `config-file`    | Custom nuget.config location                                               | No       | `nuget.config` (at root) |
 
 ## Outputs
@@ -53,3 +53,9 @@ jobs:
           echo "Last version: ${{ steps.nuget_version_check.outputs.last_version }}"
           echo "Last prerelease version: ${{ steps.nuget_version_check.outputs.last_prerelease_version }}"
 ```
+
+## Versioning
+
+This repository uses a simple versioning system based on the `VERSION` file.
+When you update the `VERSION` file and push to `main`, a Git tag with that version is created or updated automatically by the workflow.
+If you make breaking changes to the action, bump the version and update `CHANGELOG.md`.
